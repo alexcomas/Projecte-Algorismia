@@ -9,42 +9,44 @@ using namespace std;
 
 const int N=100000;
 
-int main(){
-	ofstream f1("arxiu1.txt");
-    ofstream f2("arxiu2.txt");
-    
-    int n;
-    cin>>n;
-    
-    set<int> numeros;
-    set<int>::iterator it;
-    it=numeros.end();
-    
-    int r;
-    int s;
-    
-    srand (time(NULL));
-    for(int i=0;i<n;i++){
-		r=rand()%(N);
-		while(numeros.find(r)!=it){
+class creaArxius {
+	private:
+	/*static int n;
+	static int n_f2;
+	static int n_f1af2;*/
+	
+	static int genRandom(set<int>& numeros){
+		int r=rand()%(N);
+		while(numeros.find(r)!=numeros.end()){
 			r=rand()%(N);
 		}
 		numeros.insert(r);
-		f1<<r<<endl;
-		if(rand()%2==0) f2<<r<<endl;
-		r=0;
-		s=0;
-		bool loop = true;
-		while(loop){
-			r=rand()%(N);
-			s=rand()%(N);
-			if(!(numeros.find(r)!=it && numeros.find(r)!=it && r==s)){
-				loop = false;
-			}
-		}
-		numeros.insert(r);
-		numeros.insert(s);
-		f2<<r<<endl;
-		f2<<s<<endl;
+		return r;
 	}
-}
+
+	public:
+	static pair<int,int> crea(int n, int nfile){
+		ofstream f1("dades/arxiu1_" + to_string(nfile) + ".txt");
+		ofstream f2("dades/arxiu2_" + to_string(nfile) + ".txt");
+		
+		int comptf1af2=0;
+		int compt2 = 0;
+		set<int> numeros;   
+		
+		srand (time(NULL));
+		for(int i=0;i<n;i++){
+			int r=genRandom(numeros);
+			f1<<r<<endl;
+			if(rand()%2==0){
+				comptf1af2++;
+				f2<<r<<endl;
+			}
+			f2<<genRandom(numeros)<<endl;
+			f2<<genRandom(numeros)<<endl;
+			compt2 += 2;
+		}
+		compt2 += comptf1af2;
+		return pair<int,int>(comptf1af2, compt2);
+	}
+
+};
