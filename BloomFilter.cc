@@ -20,7 +20,6 @@ class BloomFilter {
     uint32_t seed = 26;
 
     static unsigned int to_int(string s){ 
-        //cout << (int)s[0] << " + " << (int)s[1]*pow(2,8) << " + " << (int)s[2]*pow(2,16) << " + " << (int)s[3]*pow(2,24) << endl;
         return (unsigned int)s[0]+(unsigned int)s[1]*pow(2,8)+(unsigned int)s[2]*pow(2,16)+(unsigned int)s[3]*pow(2,24);
     }
 
@@ -44,29 +43,22 @@ class BloomFilter {
     int size (){
         return m;
     }
+
+    virtual void add (unsigned int s){};
+
+    virtual bool check(unsigned int s){};
 };
 
 
 class BloomFilterBit : public BloomFilter{
     private:
-    /*int m;      // Number of bits of the Bloom Filter
-    int n;      // Number of elements of the set the Bloom Filter represents
-    int k;      // Number of hash functions used
-    uint32_t seed = 26;*/
-
-    /**
-     * Function that hashes numbers as k independent hash functions based on only two independent hash functions, which are MurmurHash3 and SHA256 and returns the result (mod m).
-     * Parameters:
-     *      i -> 1 <= i <= k lineal factor which determines which independent hash function-
-     *      num -> number we wish to hash
-     */ 
+    vector<bool> values;
 
     public:
-    vector<bool> values;
     
     BloomFilterBit(int size, int n_functions){
         k = n_functions;
-        m = size*(k+1);
+        m = size;
         vector<bool> temp(m,0);
         values = temp;
     }
@@ -88,17 +80,13 @@ class BloomFilterBit : public BloomFilter{
 
 class BloomFilterCounter : public BloomFilter{
     private:
-    /*int m;      // Number of bits of the Bloom Filter
-    int n;      // Number of elements of the set the Bloom Filter represents
-    int k;      // Number of hash functions used
-    uint32_t seed = 26;*/
+    vector<int> values;
 
     public:
-    vector<int> values;
     
     BloomFilterCounter(int size, int n_functions){
         k = n_functions;
-        m = size*(k+1);
+        m = size;
         vector<int> temp(m,0);
         values = temp;
     }

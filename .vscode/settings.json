@@ -4,6 +4,7 @@
         "iostream": "cpp",
         "iosfwd": "cpp",
         "string": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "vector": "cpp"
     }
 }
