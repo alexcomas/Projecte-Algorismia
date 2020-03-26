@@ -18,7 +18,12 @@ class BloomFilter {
     int n;      // Number of elements of the set the Bloom Filter represents
     int k;      // Number of hash functions used
     uint32_t seed = 26;
-
+    /**
+     * Function that passes a 32-bit word made of characters to an unsigned integer by taking the chars one by one and converting them to unsigned integers and concatenate
+     * to form a number.
+     * Parameters:
+     *      s -> hashed string to convert to unsigned int
+     */
     static unsigned int to_int(string s){ 
         return (unsigned int)s[0]+(unsigned int)s[1]*pow(2,8)+(unsigned int)s[2]*pow(2,16)+(unsigned int)s[3]*pow(2,24);
     }
@@ -29,13 +34,17 @@ class BloomFilter {
      *      i -> 1 <= i <= k lineal factor which determines which independent hash function-
      *      num -> number we wish to hash
      */ 
-    int hash(int i, unsigned int num){
-        if(i < 0 || i >= k) return -1;
+    vector<int> hash(unsigned int num){
         unsigned int murmured;
         unsigned int SHAed;
+
         MurmurHash3_x86_32(&num, 1, seed, &murmured);
         SHAed = BloomFilter::to_int(sha256(to_string(num).substr(0,4)));
-        return (murmured + i*SHAed) % m;
+
+        vector<int> temp(k);
+        for(int j = 0; j < k; j++) 
+            temp[j] = (murmured + j*SHAed) % m;
+        return temp;
     }
 
     public:
@@ -55,7 +64,6 @@ class BloomFilterBit : public BloomFilter{
     vector<bool> values;
 
     public:
-    
     BloomFilterBit(int size, int n_functions){
         k = n_functions;
         m = size;
@@ -64,14 +72,16 @@ class BloomFilterBit : public BloomFilter{
     }
 
     void add (unsigned int s){
+        vector<int> vhash = hash(s);
         for(int i = 0; i < k; i++){
-            values[hash(i, s)] = 1;
+            values[vhash[i]] = 1;
         }
     }
     
     bool check(unsigned int s){
+        vector<int> vhash = hash(s);
         for(int i = 0; i < k; i++)
-            if(values[hash(i, s)] != 1)
+            if(values[vhash[i]] != 1)
                 return false;
         return true;
     }
@@ -92,27 +102,30 @@ class BloomFilterCounter : public BloomFilter{
     }
 
     void add (unsigned int s){
+        vector<int> vhash = hash(s);
         for(int i = 0; i < k; i++){
-            values[hash(i, s)] += 1;
+            values[vhash[i]] += 1;
         }
     }
     
+    bool check(unsigned int s){
+        vector<int> vhash = hash(s);
+        for(int i = 0; i < k; i++)
+            if(values[vhash[i]] == 0)
+                return false;
+        return true;
+    }
+
     int del (unsigned int s){
+        vector<int> vhash = hash(s);
         if(check(s)){
             for(int i = 0; i < k; i++){
-                values[hash(i, s)] -= 1;
+                values[vhash[i]] -= 1;
             }
             return 0;
         }
         else
             return -1;
-    }
-
-    bool check(unsigned int s){
-        for(int i = 0; i < k; i++)
-            if(values[hash(i, s)] == 0)
-                return false;
-        return true;
     }
 
 };

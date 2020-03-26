@@ -11,9 +11,6 @@ const int N=100000;
 
 class creaArxius {
 	private:
-	/*static int n;
-	static int n_f2;
-	static int n_f1af2;*/
 	
 	static int genRandom(set<int>& numeros){
 		int r=rand()%(N);

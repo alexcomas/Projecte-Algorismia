@@ -1,7 +1,7 @@
 clear
-set title "Falços positius segons el nombre de funcions de hashing"
-set xlabel "Nombre de funcions de hashing"
-set ylabel "% de positius que són falços"
+set title "Ratio alsos positius segons el nombre de funcions de hashing, m = 1917 , n = 200 , p = 1%"
+set xlabel "Nombre de funcions de hashing (k)"
+set ylabel "Ratio de falsos positius en % (RFP)"
 set autoscale
 set xzeroaxis linestyle 7
 show xzeroaxis

@@ -1,0 +1,21 @@
+Guia per a reproduir els resultats exposats a la part de Bloom Filters del projecte - Realitzat per Alexandre Comas
+
+Per a compilar:
+    g++ -o main main.cc creaArxius.cc BloomFilter.cc hash_functions/MurmurHash3.cpp hash_functions/sha256.cpp
+
+Per a executar (a més tenir en compte que per pantalla es treu informació important):
+    La manera correcta d'executar aques programa és la següent:
+        ./main VAR [n f i COUNT [p]]
+    Si VAR = 'N' es grafica segons el nombre d'elements del fitxer 1.
+    Si VAR = 'F' es grafica segons el nombre de funcions de hashing.
+    [n] fixa el nombre d'elements de l'arxiu1, per defecte és 200.
+    [f] fixa el nombre de funcions de hashing, per defecte és l'òptim.
+    [i] fixa el nombre d'iteracions que es vol fer per a obtenir la mitjana, per defecte és 200.
+    Si COUNT = 0 s'implementa el Bloom Filter amb una array de bits (per defecte).
+    Si COUNT = 1 s'implementa el Bloom Filter amb una array de comptadors.
+    ATENCIÓ: Si es volen triar els últims 4 paràmetres, s'han d'especificar tots.
+    [p] fixa la probabilitat de fals positiu que volem assolir, per defecte és 0,01 (opcional dins de l'opcional).
+
+Els gràfics han estat elaborats amb GNUPLOT i les comandes per cada tipus de gràfic estan adjuntats. Per a reproduir-los executar al terminal de GNUPLOT, per exemple:
+    load "gnuplot_commands_F.plt"
+Això generarà un .png amb el gràfic.

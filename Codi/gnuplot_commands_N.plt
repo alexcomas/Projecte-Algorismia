@@ -1,7 +1,7 @@
 clear
-set title "Falços positius segons el nombre de posicions del filtre de Bloom"
-set xlabel "Mida Filtre de Bloom"
-set ylabel "% de positius que són falços"
+set title "Ratio de falsos positius segons el nombre de posicions del filtre de Bloom, k = 7 , n = 200 , p = 1%"
+set xlabel "Mida Filtre de Bloom (m)"
+set ylabel "Ratio de falsos positius en % (RFP)"
 set autoscale
 set xzeroaxis linestyle 7
 show xzeroaxis
